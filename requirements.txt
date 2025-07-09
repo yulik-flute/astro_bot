@@ -1,0 +1,7 @@
+aiogram==3.0.0b7
+flatlib==0.6.0
+python-dotenv==1.0.0
+openai==0.27.8
+timezonefinder==6.1.10
+pytz==2023.3
+requests==2.31.0
