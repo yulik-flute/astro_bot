@@ -7,7 +7,7 @@ from flatlib.geopos import GeoPos
 from flatlib.datetime import Datetime
 from flatlib import const
 from dotenv import load_dotenv
-from openai import OpenAI
+import openai
 
 from timezonefinder import TimezoneFinder
 import pytz
@@ -17,7 +17,7 @@ load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-client = OpenAI(api_key=OPENAI_API_KEY)
+openai.api_key = OPENAI_API_KEY
 
 logging.basicConfig(level=logging.INFO)
 
@@ -231,7 +231,7 @@ async def show_natal_chart_callback(callback_query: types.CallbackQuery):
     )
 
     try:
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.8,
@@ -270,7 +270,7 @@ async def chat_with_gpt(message: types.Message):
 )
 
     try:
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.8,
@@ -311,7 +311,7 @@ async def daily_horoscope_callback(callback_query: types.CallbackQuery):
     )
 
     try:
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.8,
