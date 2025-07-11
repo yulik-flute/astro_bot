@@ -126,9 +126,9 @@ async def get_birth_place(message: types.Message):
     if lat is not None and lon is not None:
         pos = GeoPos(dec_to_dms(lat), dec_to_dms(lon))
     else:
-        await message.reply(f"⚠️ Не удалось определить координаты города {city_name}, {user_first_name}. Использую Москву по умолчанию.")
-        lat, lon = 55.7558, 37.6173
-        pos = GeoPos("55:45:21", "37:37:03")
+        await message.reply(f"⚠️ Не удалось определить координаты города {city_name}, {user_first_name}. Использую Минск по умолчанию.")
+        lat, lon = 53.9006, 27.5590
+        pos = GeoPos("53:54:02", "27:33:32")
 
     date = user_data[message.from_user.id]['birth_date']
     time = user_data[message.from_user.id]['birth_time']
