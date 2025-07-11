@@ -8,6 +8,7 @@ from flatlib.datetime import Datetime
 from flatlib import const
 from dotenv import load_dotenv
 import openai
+import random
 
 from timezonefinder import TimezoneFinder
 import pytz
@@ -25,6 +26,15 @@ bot = Bot(token=TELEGRAM_TOKEN)
 dp = Dispatcher(bot)
 
 user_data = {}
+
+follow_up_phrases = [
+    "💬 Хочешь спросить что-то ещё?",
+    "✨ Чем ещё могу помочь?",
+    "🔍 Есть ещё вопросы?",
+    "🙌 Готов продолжить, если хочешь!",
+    "🌟 Что бы ты хотел узнать ещё?",
+    "🧠 Не стесняйся, спрашивай что угодно!",
+]
 
 # ✅ Добавляем кнопки, которые появятся после ответов
 after_natal_keyboard = types.InlineKeyboardMarkup()
@@ -272,6 +282,7 @@ async def chat_with_gpt(message: types.Message):
             temperature=0.8,
         )
         answer = response.choices[0].message.content
+        answer += f"\n\n{random.choice(follow_up_phrases)}"
         await bot.delete_message(chat_id=user_id, message_id=typing_msg.message_id)
     except Exception as e:
         logging.error(f"Ошибка при запросе к OpenAI: {e}")
