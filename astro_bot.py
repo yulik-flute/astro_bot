@@ -231,12 +231,14 @@ async def show_natal_chart_callback(callback_query: types.CallbackQuery):
     )
 
     try:
+        typing_msg = await bot.send_message(user_id, "✍️ Бот печатает натальную карту...")
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.8,
         )
         answer = response.choices[0].message.content
+        await bot.delete_message(chat_id=user_id, message_id=typing_msg.message_id)        
     except Exception as e:
         logging.error(f"Ошибка при запросе к OpenAI: {e}")
         await bot.send_message(user_id, f"❌ Произошла ошибка при получении натальной карты, {user_first_name}.")
@@ -246,36 +248,31 @@ async def show_natal_chart_callback(callback_query: types.CallbackQuery):
 
 @dp.message_handler()
 async def chat_with_gpt(message: types.Message):
+    user_id = message.from_user.id          # ← добавили
     user = user_data.get(message.from_user.id)
     if not user:
         await message.reply("Сначала отправь /start и введи свои данные ✨")
         return
 
     prompt = (
-    f"Ты профессиональный астролог.\n"
-    f"У пользователя дата рождения: {user['birth_date']}, "
-    f"время: {user['birth_time']}, "
-    f"место: {user['birth_place']}.\n"
-    f"Составь подробную интерпретацию натальной карты на основе этих данных.\n"
-    f"Используй реальные астрологические факты.\n"
-    f"Выделяй названия планет и знаков Зодиака **жирным шрифтом**, "
-    f"рядом с ними добавляй соответствующие эмоджи (например, ☀️ для **Солнце**, ♈️ для **Овен**).\n"
-    f"Пиши красиво, вдохновляюще, но содержательно.\n\n"
-    f"❗ Вместо заголовков `#`, используй просто **жирный текст** и эмоджи:\n"
-    f"Например:\n"
-    f"**🪐 Планеты**\n"
-    f"**🏠 Дома**\n"
-    f"**🔗 Аспекты**\n"
-    f"**🔮 Общая картина**\n"
+        f"Ты профессиональный астролог. Пользователь задаёт вопрос. "
+        f"Дата рождения: {user['birth_date']}, "
+        f"время: {user['birth_time']}, "
+        f"место: {user['birth_place']}.\n"
+        f"Ответь на вопрос, используя знания астрологии и натальной карты.\n"
+        f"Вопрос: {message.text}\n"
+        f"Отвечай подробно, но ясно и красиво. Используй эмоджи и выделения жирным шрифтом."
 )
 
     try:
+        typing_msg = await bot.send_message(user_id, "✍️ Бот печатает...")
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.8,
         )
         answer = response.choices[0].message.content
+        await bot.delete_message(chat_id=user_id, message_id=typing_msg.message_id)
     except Exception as e:
         logging.error(f"Ошибка при запросе к OpenAI: {e}")
         await message.reply("❌ Произошла ошибка при обработке твоего запроса. Попробуй позже.")
@@ -311,12 +308,14 @@ async def daily_horoscope_callback(callback_query: types.CallbackQuery):
     )
 
     try:
+        typing_msg = await bot.send_message(user_id, "✍️ Бот печатает гороскоп...")
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.8,
         )
         answer = response.choices[0].message.content
+        await bot.delete_message(chat_id=user_id, message_id=typing_msg.message_id)
     except Exception as e:
         logging.error(f"Ошибка при запросе к OpenAI: {e}")
         await bot.send_message(user_id, f"❌ Произошла ошибка при получении гороскопа на сегодня, {user_first_name}.")
