@@ -29,12 +29,12 @@ user_data = {}
 # ✅ Добавляем кнопки, которые появятся после ответов
 after_natal_keyboard = types.InlineKeyboardMarkup()
 after_natal_keyboard.add(
-    types.InlineKeyboardButton("🔮 Получить гороскоп на день", callback_data="daily_horoscope")
+    types.InlineKeyboardButton("🔮 Гороскоп на день", callback_data="daily_horoscope")
 )
 
 after_horoscope_keyboard = types.InlineKeyboardMarkup()
 after_horoscope_keyboard.add(
-    types.InlineKeyboardButton("🪐 Рассчитать натальную карту", callback_data="show_natal_chart")
+    types.InlineKeyboardButton("🪐 Натальная карта", callback_data="show_natal_chart")
 )
 
 def get_coords(city_name):
