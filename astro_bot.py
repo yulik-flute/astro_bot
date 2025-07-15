@@ -185,8 +185,8 @@ async def get_birth_place(message: types.Message):
 
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(
-        types.InlineKeyboardButton("Рассчитать натальную карту", callback_data="show_natal_chart"),
-        types.InlineKeyboardButton("Получить гороскоп на день", callback_data="daily_horoscope")
+        types.InlineKeyboardButton("Натальная карта", callback_data="show_natal_chart"),
+        types.InlineKeyboardButton("Гороскоп на день", callback_data="daily_horoscope")
     )
 
     await message.reply(
