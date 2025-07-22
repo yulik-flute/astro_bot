@@ -183,6 +183,8 @@ async def get_birth_place(message: types.Message):
             emoji = signs_emoji.get(obj.sign, obj.sign)
             info_lines.append(f"• {names[planet]}: {emoji}")
 
+    user_data[message.from_user.id]['planet_positions'] = "\n".join(info_lines)
+
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(
         types.InlineKeyboardButton("Натальная карта", callback_data="show_natal_chart"),
@@ -200,6 +202,8 @@ async def get_birth_place(message: types.Message):
 async def show_natal_chart_callback(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
     user = user_data.get(user_id)
+	
+    planet_positions = user.get('planet_positions', 'Нет данных по планетам')	
 
     try:
         await callback_query.answer("✨ Считаем твою натальную карту...")
@@ -214,9 +218,8 @@ async def show_natal_chart_callback(callback_query: types.CallbackQuery):
 
     prompt = (
         f"Ты профессиональный астролог.\n"
-        f"У пользователя дата рождения: {user['birth_date']}, "
-        f"время: {user['birth_time']}, "
-        f"место: {user['birth_place']}.\n"
+        f"Вот положения планет в натальной карте пользователя:\n\n"
+        f"{planet_positions}\n\n"
         f"Составь подробную интерпретацию натальной карты на основе этих данных.\n"
         f"Используй реальные астрологические факты.\n"
         f"Выделяй названия планет и знаков Зодиака **жирным шрифтом**, "
@@ -286,6 +289,8 @@ async def chat_with_gpt(message: types.Message):
 async def daily_horoscope_callback(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
     user = user_data.get(user_id)
+	
+    planet_positions = user.get('planet_positions', 'Нет данных по планетам')
 
     try:
         await callback_query.answer("✨ Готовлю твой гороскоп на сегодня...")
